@@ -44,7 +44,14 @@ export default function DynamicForm(props: DynamicFormProps) {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ errors, touched, handleReset, handleSubmit, status, setStatus }) => (
+        {({
+          errors,
+          touched,
+          handleReset,
+          handleSubmit,
+          status,
+          setStatus
+        }) => (
           <>
             <Modal
               failMessage={failMessage}
@@ -56,7 +63,7 @@ export default function DynamicForm(props: DynamicFormProps) {
               {formInput.map((inputItem: DynamicFormInputObject) => (
                 <React.Fragment key={inputItem.name}>
                   <label htmlFor={inputItem.name}>
-                    {inputItem.displayName}:{' '}
+                    <b>{inputItem.displayName}</b>:{' '}
                   </label>
                   <Field
                     aria-errormessage={inputItem.errorMessageId}
@@ -85,7 +92,9 @@ export default function DynamicForm(props: DynamicFormProps) {
                   ) : null}
                   {inputHints ? (
                     <span>
-                      <p>{inputItem.hintText}</p>
+                      <p>
+                        <i>{inputItem.hintText}</i>
+                      </p>
                     </span>
                   ) : null}
                   <br />

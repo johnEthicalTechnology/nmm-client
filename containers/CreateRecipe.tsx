@@ -27,7 +27,8 @@ export default function SignIn() {
       errorMessageId: 'titleError',
       required: true,
       autocomplete: 'off',
-      displayName: 'Title'
+      displayName: 'Recipe Title',
+      hintText: 'The name of the recipe.'
     },
     {
       type: 'text',
@@ -47,7 +48,8 @@ export default function SignIn() {
       autocomplete: 'off',
       displayName: 'Method',
       textArea: true,
-      hintText: 'Comma separated, numbered steps please e.g. 1\) This is a step,2\) This is a step'
+      hintText:
+        'Comma separated, numbered steps please e.g. 1) This is a step,2) This is a step'
     },
     {
       type: 'text',
@@ -56,59 +58,8 @@ export default function SignIn() {
       required: true,
       autocomplete: 'off',
       displayName: 'Hashtags',
-      hintText: 'Comma separated, spaceless hashtags e.g. #hashtag1,#hashtag2,#hashTag3'
-    },
-    {
-      type: 'text',
-      name: 'name',
-      errorMessageId: 'nameError',
-      required: true,
-      autocomplete: 'off',
-      displayName: "Creator's Name"
-    },
-    {
-      type: 'text',
-      name: 'website',
-      errorMessageId: 'websiteError',
-      required: true,
-      autocomplete: 'off',
-      displayName: 'Website',
-      hintText: "URL to creator's site"
-    },
-    {
-      type: 'email',
-      name: 'email',
-      errorMessageId: 'emailError',
-      required: true,
-      autocomplete: 'off',
-      displayName: 'Email'
-    },
-    {
-      type: 'text',
-      name: 'facebook',
-      errorMessageId: 'facebookError',
-      required: true,
-      autocomplete: 'off',
-      displayName: 'Facebook page or profile',
-      hintText: "Full URL to creator's page or profile"
-    },
-    {
-      type: 'text',
-      name: 'instagram',
-      errorMessageId: 'instagramError',
-      required: true,
-      autocomplete: 'off',
-      displayName: 'Instagram profile',
-      hintText: "Full URL to creator's page"
-    },
-    {
-      type: 'text',
-      name: 'twitter',
-      errorMessageId: 'twitterError',
-      required: true,
-      autocomplete: 'off',
-      displayName: 'Twitter profile',
-      hintText: "Full URL to creator's profile"
+      hintText:
+        'Comma separated, spaceless hashtags e.g. #hashtag1,#hashtag2,#hashTag3.'
     },
     {
       type: 'file',
@@ -118,6 +69,60 @@ export default function SignIn() {
       autocomplete: 'off',
       displayName: 'Recipe Photo',
       hintText: 'One photo only please.'
+    },
+    {
+      type: 'text',
+      name: 'name',
+      errorMessageId: 'nameError',
+      required: true,
+      autocomplete: 'off',
+      displayName: "Creator's Name",
+      hintText: 'What name the creator goes by.'
+    },
+    {
+      type: 'text',
+      name: 'website',
+      errorMessageId: 'websiteError',
+      required: true,
+      autocomplete: 'off',
+      displayName: 'Website',
+      hintText: "URL to creator's site."
+    },
+    {
+      type: 'email',
+      name: 'email',
+      errorMessageId: 'emailError',
+      required: true,
+      autocomplete: 'off',
+      displayName: 'Email',
+      hintText: "The creator's email address."
+    },
+    {
+      type: 'text',
+      name: 'facebook',
+      errorMessageId: 'facebookError',
+      required: true,
+      autocomplete: 'off',
+      displayName: 'Optional - Facebook page or profile',
+      hintText: "Full URL to creator's page or profile."
+    },
+    {
+      type: 'text',
+      name: 'instagram',
+      errorMessageId: 'instagramError',
+      required: true,
+      autocomplete: 'off',
+      displayName: 'Optional - Instagram profile',
+      hintText: "Full URL to creator's page."
+    },
+    {
+      type: 'text',
+      name: 'twitter',
+      errorMessageId: 'twitterError',
+      required: true,
+      autocomplete: 'off',
+      displayName: 'Optional - Twitter profile',
+      hintText: "Full URL to creator's profile."
     }
   ]
 
@@ -255,13 +260,19 @@ export default function SignIn() {
     }
   }
 
-  const submitType = 'Create Recipe!'
-  const failMessage = 'Recipe creation failed. You do not have to fill out values. Please press submit again!'
+  const submitType = 'CREATE RECIPE!'
+  const failMessage =
+    'Recipe creation failed. You do not have to fill out values. Please press submit again!'
   const successMessage = 'Recipe creation succeeded! Yay!'
 
   return (
     <div>
-      <p>Create your recipe!</p>
+      <h3>
+        Add a recipe to the database by filling in the form below and pressing
+        submit.
+      </h3>
+      <p>Every input required, unless stated otherwise.</p>
+      <hr />
       <DynamicForm
         failMessage={failMessage}
         formInput={formInput}
