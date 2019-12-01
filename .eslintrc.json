@@ -1,0 +1,33 @@
+{
+  "extends": [
+      "prettier",
+      "prettier/@typescript-eslint"
+  ],
+  "plugins": [
+      "@typescript-eslint",
+      "prettier"
+  ],
+  "rules": {
+      "prettier/prettier": [
+          "error",
+          {
+              "semi": false,
+              "singleQuote": true,
+              "function-call-argument-newline": "consistent",
+              "allowAllPropertiesOnSameLine": false
+          }
+      ],
+      "curly": [
+          "error",
+          "multi-line"
+      ],
+      "camelcase": 2
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures":  {
+        "jsx":  true  // Allows for the parsing of JSX
+      }
+  }
+}
