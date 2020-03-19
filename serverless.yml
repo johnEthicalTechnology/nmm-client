@@ -1,0 +1,7 @@
+myNextApplication:
+  component: serverless-next.js
+  inputs:
+    domain: 'nomeatmay.recipes'
+    timeout:
+      defaultLambda: 30
+      apiLambda: 30

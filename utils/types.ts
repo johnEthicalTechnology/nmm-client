@@ -1,15 +1,14 @@
 export interface ISignUpArgs {
-  email: string;
-  password: string;
-  username: string;
+  email: string
+  password: string
 }
 
 export interface IUserMetadata {
-  motivations: string;
+  motivations: string
   // other user data like goal?
 }
 
 export enum SignInTypes {
-  auth0 = "AUTH0",
-  social = "SOCIAL"
+  auth0 = 'AUTH0',
+  social = 'SOCIAL'
 }

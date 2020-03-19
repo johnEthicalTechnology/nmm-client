@@ -7,11 +7,11 @@ import logger from '../utils/logger'
 import DynamicForm from '../components/DynamicForm'
 // TYPES
 import { OnSubmitObject } from '../components/types'
-import { FormikActions } from 'formik'
+import { FormikHelpers } from 'formik'
 
 const CREATE_RECIPE = gql`
-  mutation createRecipe($recipe: RecipeInput!) {
-    createRecipe(recipe: $recipe) {
+  mutation createRecipe($recipe: RecipeInput!, $createSecret: String!) {
+    createRecipe(recipe: $recipe, createSecret: $createSecret) {
       id
       title
       method
@@ -19,7 +19,7 @@ const CREATE_RECIPE = gql`
   }
 `
 
-export default function SignIn() {
+export default function CreateRecipe() {
   const formInput = [
     {
       type: 'text',
@@ -38,7 +38,8 @@ export default function SignIn() {
       autocomplete: 'off',
       displayName: 'Ingredients',
       textArea: true,
-      hintText: 'Comma separated ingredient items, please.'
+      hintText: 'Add one ingredient per input box.',
+      fieldArray: true
     },
     {
       type: 'text',
@@ -49,7 +50,8 @@ export default function SignIn() {
       displayName: 'Method',
       textArea: true,
       hintText:
-        'Comma separated, numbered steps please e.g. 1) This is a step,2) This is a step'
+        'Add one numbered method per input box e.g. 1) step one in recipe',
+      fieldArray: true
     },
     {
       type: 'text',
@@ -58,8 +60,8 @@ export default function SignIn() {
       required: true,
       autocomplete: 'off',
       displayName: 'Hashtags',
-      hintText:
-        'Comma separated, spaceless hashtags e.g. #hashtag1,#hashtag2,#hashTag3.'
+      hintText: 'Add one hashtag per input box e.g. #hashtag',
+      fieldArray: true
     },
     {
       type: 'file',
@@ -99,9 +101,18 @@ export default function SignIn() {
     },
     {
       type: 'text',
+      name: 'videoUrl',
+      errorMessageId: 'videoUrlError',
+      required: false,
+      autocomplete: 'off',
+      displayName: 'Optional - URL for video',
+      hintText: 'The full URL for the youtube video'
+    },
+    {
+      type: 'text',
       name: 'facebook',
       errorMessageId: 'facebookError',
-      required: true,
+      required: false,
       autocomplete: 'off',
       displayName: 'Optional - Facebook page or profile',
       hintText: "Full URL to creator's page or profile."
@@ -110,7 +121,7 @@ export default function SignIn() {
       type: 'text',
       name: 'instagram',
       errorMessageId: 'instagramError',
-      required: true,
+      required: false,
       autocomplete: 'off',
       displayName: 'Optional - Instagram profile',
       hintText: "Full URL to creator's page."
@@ -119,10 +130,19 @@ export default function SignIn() {
       type: 'text',
       name: 'twitter',
       errorMessageId: 'twitterError',
-      required: true,
+      required: false,
       autocomplete: 'off',
       displayName: 'Optional - Twitter profile',
       hintText: "Full URL to creator's profile."
+    },
+    {
+      type: 'password',
+      name: 'createSecret',
+      errorMessageId: 'createSecretError',
+      required: true,
+      autocomplete: 'off',
+      displayName: 'Create Secret',
+      hintText: 'The secret needed to create a recipe!'
     }
   ]
 
@@ -130,6 +150,7 @@ export default function SignIn() {
     {
       name: 'difficulty',
       errorMessageId: 'difficultyError',
+      title: 'How difficult is the recipe?',
       options: [
         {
           value: '',
@@ -152,6 +173,7 @@ export default function SignIn() {
     {
       name: 'cost',
       errorMessageId: 'costError',
+      title: 'How costly is the recipe?',
       options: [
         {
           value: '',
@@ -174,6 +196,7 @@ export default function SignIn() {
     {
       name: 'mealType',
       errorMessageId: 'mealTypeError',
+      title: 'What meal type is it?',
       options: [
         {
           value: '',
@@ -199,22 +222,29 @@ export default function SignIn() {
     }
   ]
 
+  /**
+   * @remark used for create-recipe b/c one photo is made sent to cloudinary
+   * to return a low & standard resolution size. All the inputs in
+   * formInitialvalues are sent to the lambda.
+   */
   const formInitialValues = [
-    'mealType',
-    'lowResolution',
-    'standardResolution',
-    'name',
-    'title',
-    'ingredients',
-    'method',
-    'difficulty',
-    'cost',
-    'hashtags',
-    'website',
-    'email',
-    'facebook',
-    'instagram',
-    'twitter'
+    { name: 'ingredients', value: [''] },
+    { name: 'method', value: [''] },
+    { name: 'hashtags', value: [''] },
+    { name: 'mealType', value: '' },
+    { name: 'lowResolution', value: '' },
+    { name: 'standardResolution', value: '' },
+    { name: 'name', value: '' },
+    { name: 'title', value: '' },
+    { name: 'difficulty', value: '' },
+    { name: 'cost', value: '' },
+    { name: 'website', value: '' },
+    { name: 'email', value: '' },
+    { name: 'facebook', value: '' },
+    { name: 'instagram', value: '' },
+    { name: 'twitter', value: '' },
+    { name: 'createSecret', value: '' },
+    { name: 'videoUrl', value: '' }
   ]
 
   const validationSchema = object().shape({
@@ -230,18 +260,24 @@ export default function SignIn() {
     cost: string().required('Please select cost!'),
     mealType: string().required('Please select meal type!'),
     difficulty: string().required('Please select difficulty!'),
-    lowResolution: string().required('Please upload a photo!')
+    lowResolution: string().required('Please upload a photo!'),
+    createSecret: string().required(
+      'You need the create secret to create a recipe!'
+    )
   })
 
   const [createRecipe] = useMutation(CREATE_RECIPE)
   const onSubmit = async (
     values: OnSubmitObject,
-    { resetForm, setSubmitting, setStatus }: FormikActions<OnSubmitObject>
+    { resetForm, setSubmitting, setStatus }: FormikHelpers<OnSubmitObject>
   ) => {
     try {
+      const createSecret = values.createSecret
+      delete values.createSecret
       const recipe = await createRecipe({
         variables: {
-          recipe: values
+          recipe: values,
+          createSecret
         }
       })
       resetForm()
@@ -282,7 +318,6 @@ export default function SignIn() {
         validationSchema={validationSchema}
         formSelect={formSelect}
         formInitialValues={formInitialValues}
-        inputHints={true}
       />
     </div>
   )

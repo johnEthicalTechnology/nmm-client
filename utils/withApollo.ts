@@ -1,46 +1,27 @@
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { setContext } from "apollo-link-context";
-import nextWithApollo from 'next-with-apollo';
+import nextWithApollo from 'next-with-apollo'
+import createApollo from '../graphql/createApollo'
+import { NormalizedCacheObject } from 'apollo-cache-inmemory'
 
-const cache = new InMemoryCache();
+/**
+ * Always creates a new apollo client on the server
+ * Creates or reuses apollo client in the browser.
+ */
 
-const httpLink = new HttpLink({
-  uri: process.env.SERVER_URI,
-  credentials: 'include'
-});
+function initApollo(initialState: NormalizedCacheObject) {
+  let apolloClient = null
 
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const isBrowser = typeof window !== 'undefined';
-  let signedIn, data = false;
+  const isServer = typeof window === 'undefined'
 
-  // TODO - update signed_in when user logs out or refreshes page
-  // TODO - need to remove signed in value from local storage.
-  if(isBrowser) signedIn = localStorage.getItem('signed_in');
-  console.log('signedIn',signedIn);
+  // Make sure to create a new client for every server-side request so that data
+  // isn't shared between connections (which would be bad)
+  if (isServer) return createApollo(initialState)
 
-  // if(signedIn) data = cache.readQuery({query: ACCESS_TOKEN});
+  // Reuse client on the client-side
+  if (!apolloClient) apolloClient = createApollo(initialState)
 
-  // TODO - update the data to inclued .access_token
-  return {
-    headers: {
-      ...headers,
-      authorization: data ? `Bearer ${data}` : '',
-      'Access-Control-Allow-Origin': process.env.CLIENT_URI
-    }
-  }
-});
+  return apolloClient
+}
 
-export default nextWithApollo(({ctx, headers, initialState}) => {
-  console.log('CTX', ctx);
-  console.log('HEADERS', headers);
-
-  return new ApolloClient({
-    name: 'No Meat May',
-    version: 'v0.0.0',
-    cache: cache.restore(initialState || {}),
-    link: authLink.concat(httpLink)
-  })
+export default nextWithApollo(({ initialState = {} }) => {
+  return initApollo(initialState)
 })

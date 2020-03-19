@@ -1,11 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import CreateRecipe from '../containers/CreateRecipe';
-
+import CreateRecipe from '../containers/CreateRecipe'
 
 export default function CreateRecipePage() {
-
-  return(
+  return (
     <div>
       <h1>Welcome to create new recipe page!</h1>
       <CreateRecipe />

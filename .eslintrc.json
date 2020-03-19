@@ -1,33 +1,28 @@
 {
-  "extends": [
-      "prettier",
-      "prettier/@typescript-eslint"
-  ],
-  "plugins": [
-      "@typescript-eslint",
-      "prettier"
-  ],
+  "extends": ["prettier", "prettier/@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier", "react-hooks"],
   "rules": {
-      "prettier/prettier": [
-          "error",
-          {
-              "semi": false,
-              "singleQuote": true,
-              "function-call-argument-newline": "consistent",
-              "allowAllPropertiesOnSameLine": false
-          }
-      ],
-      "curly": [
-          "error",
-          "multi-line"
-      ],
-      "camelcase": 2
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": false,
+        "singleQuote": true,
+        "jsxSingleQuote": true,
+        "function-call-argument-newline": "consistent",
+        "allowAllPropertiesOnSameLine": false,
+        "trailingComma": "none"
+      }
+    ],
+    "curly": ["error", "multi-line"],
+    "camelcase": 1,
+    "react-hooks/rules-of-hooks": "warn",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-      "sourceType": "module",
-      "ecmaFeatures":  {
-        "jsx":  true  // Allows for the parsing of JSX
-      }
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   }
 }

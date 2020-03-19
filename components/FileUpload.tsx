@@ -3,36 +3,38 @@ import React, { ChangeEvent } from 'react'
 import logger from '../utils/logger'
 import { FileUploadProps } from './types'
 
-export default (props: FileUploadProps) => {
+export default function FileUpload(props: FileUploadProps) {
   const { field, form } = props
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     logger.log({
       level: 'INFO',
-      description: 'Starting file upload...'
+      description: `Starting file upload... for ${field.name}`
     })
+    // TODO - fix this API call up to change the cloudinary folder it uses.
     if (!event.target.files) return
     const file = event.target.files[0]
 
     let data = new FormData()
     data.append('file', file)
     // N.B. - Cloudinary settings for image transformation
-    data.append('upload_preset', 'nmm-recipes')
+    if (field.name == 'lowResProfile') {
+      data.append('upload_preset', 'nmm-profile-pics')
+    } else {
+      data.append('upload_preset', 'nmm-recipes')
+    }
 
-    const res = await fetch(
-      process.env.CLOUDINARY_API || '',
-      {
-        method: 'POST',
-        body: data,
-      }
-    )
+    const res = await fetch(process.env.CLOUDINARY_API || '', {
+      method: 'POST',
+      body: data
+    })
     logger.log({
       level: 'INFO',
       description: `Transformation status: ${res.statusText} ${res.status}`
     })
 
     const files = await res.json()
-    if(files.error) {
+    if (files.error) {
       logger.log({
         level: 'ERROR',
         description: files.error.message
@@ -55,7 +57,7 @@ export default (props: FileUploadProps) => {
         aria-invalid={props['aria-invalid']}
         aria-required={props['aria-required']}
         autoComplete={props.autoComplete}
-        data-testid={props["data-testid"]}
+        data-testid={props['data-testid']}
         id={props.id}
         type={props.type}
         onChange={event => handleChange(event)}
