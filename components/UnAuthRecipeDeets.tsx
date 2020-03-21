@@ -2,12 +2,10 @@ import React from 'react'
 import { Recipe } from '../containers/types'
 import { Box, Image, Heading, Button, List } from 'grommet'
 
-import SignUp from '../containers/SignIn'
-
 export default function UnAuthRecipeDeets({ recipe }: { recipe: Recipe }) {
   return (
-    <Box a11yTitle='recipe title and image box' align='center' justify='center'>
-      <Box pad='small' width='640'>
+    <Box a11yTitle='recipe container' align='center' justify='center'>
+      <Box a11yTitle='recipe title and image container' pad='small' width='640'>
         <Heading size='medium'>{recipe.title}</Heading>
         <Image
           a11yTitle='recipe image'
@@ -19,10 +17,10 @@ export default function UnAuthRecipeDeets({ recipe }: { recipe: Recipe }) {
         <Heading level='2'>Meal Type: {recipe.mealType}</Heading>
         <Heading level='2'>Difficulty: {recipe.difficulty}</Heading>
         <Heading level='2'>Budget: {recipe.cost}</Heading>
-        <h3>Ingredients</h3>
       </Box>
+      <h3>Ingredients</h3>
       <Box
-        a11yTitle='recipe method box'
+        a11yTitle='recipe ingredients container'
         align='center'
         border={{
           size: 'xsmall',
@@ -32,13 +30,14 @@ export default function UnAuthRecipeDeets({ recipe }: { recipe: Recipe }) {
         width='medium'
       >
         <List
-          a11yTitle='list of steps for recipe method'
+          a11yTitle='list of recipe ingredients'
+
           data={recipe.ingredients}
         />
       </Box>
       <h3>Method</h3>
       <Box
-        a11yTitle='recipe method box'
+        a11yTitle='recipe method container'
         align='center'
         border={{
           size: 'xsmall',

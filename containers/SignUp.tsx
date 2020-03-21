@@ -27,8 +27,6 @@ export default function SignIn() {
       displayName: 'Password'
     }
   ]
-  
-  const PASSWORD_REGEX = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])([^\s]){10,16}$/
   const validationSchema = object().shape({
     email: string()
       .email('Invalid email!')
@@ -36,10 +34,6 @@ export default function SignIn() {
       .required('Please enter an email!'),
     password: string()
       .min(10, 'Too short!')
-      .matches(
-        PASSWORD_REGEX,
-        'Password must be at least 10 characters long with one (1) upper case, one (1) lower case, and one(1) special character(!@#$%^&*)'
-      )
       .trim()
       .required('Please enter a password!')
   })

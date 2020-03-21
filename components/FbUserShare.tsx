@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'grommet'
 import logger from '../utils/logger'
 
 import {
@@ -55,9 +56,17 @@ export default function FbUserShare({
 
   return (
     <div>
-      <button style={{ position: 'absolute' }} onClick={handleShareItem}>
-        Share item to your timeline
-      </button>
+      <Button
+        a11yTitle='share'
+        color='red'
+        data-testid='button'
+        hoverIndicator={{ color: 'white' }}
+        label='SHARE RECIPE TO TIMELINE'
+        margin='medium'
+        primary={true}
+        type='button'
+        onClick={handleShareItem}
+      />
     </div>
   )
 }

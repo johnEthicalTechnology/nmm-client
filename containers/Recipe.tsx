@@ -1,10 +1,11 @@
-import React, { useState, createContext, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import dynamic from 'next/dynamic'
 import { withRouter, Router } from 'next/router'
 import logger from '../utils/logger'
 import useCheckSigninStatus from '../hooks/useCheckSigninStatus'
+import { Box, Image, Heading, Button, List } from 'grommet'
 
 import FbUserShare from '../components/FbUserShare'
 import FbInitAndToken from '../containers/FbInitParent'
@@ -200,16 +201,24 @@ const Recipe = ({ router }: { router: Router }) => {
   if (recipeError != undefined && recipeError) {
     return <h1>Error! {recipeError.message}</h1>
   }
-  if (!signedIn) {
-    return <UnAuthRecipeDeets recipe={recipeData.recipe} />
-  }
+  // if (!signedIn) {
+  //   return <UnAuthRecipeDeets recipe={recipeData.recipe} />
+  // }
   return (
-    <div>
-      <h1>You've choosen {recipeData.recipe.id}</h1>
-      <h1>Title: {recipeData.recipe.title}</h1>
-      <h2>Meal Type: {recipeData.recipe.mealType}</h2>
-      <h2>Difficulty: {recipeData.recipe.difficulty}</h2>
-      <h2>Budget: {recipeData.recipe.cost}</h2>
+    <Box a11yTitle='recipe container' align='center' justify='center'>
+      <Box a11yTitle='recipe title and image container' pad='small' width='640'>
+        <Heading size='medium'>{recipeData.recipe.title}</Heading>
+        <Image
+          a11yTitle='recipe image'
+          fit='contain'
+          src={recipeData.recipe.standardResolution}
+        />
+      </Box>
+      <Box>
+        <Heading level='2'>Meal Type: {recipeData.recipe.mealType}</Heading>
+        <Heading level='2'>Difficulty: {recipeData.recipe.difficulty}</Heading>
+        <Heading level='2'>Budget: {recipeData.recipe.cost}</Heading>
+      </Box>
       <h3>Ingredients</h3>
       {/* TODO -  1) add styling 2) make sure the non-signed in user doesn't have access to clicking on the items */}
       {ingredientsCompleted ? (
@@ -217,29 +226,47 @@ const Recipe = ({ router }: { router: Router }) => {
           <p>You've completed this section!</p>
         </span>
       ) : (
-        <div
+        <Box
+          a11yTitle='recipe ingredient container'
+          align='center'
+          border={{
+            size: 'xsmall',
+            side: 'vertical'
+          }}
+          justify='center'
           onClick={() =>
             handleCreateUpdateChallengeApi(values, ['Ingredients'])
           }
+          width='medium'
         >
-          {recipeData.recipe.ingredients.map(
-            (ingredient: string, index: number) => (
-              <p key={index}>{ingredient}</p>
-            )
-          )}
-        </div>
+          <List
+            a11yTitle='list of recipe ingredients'
+            data={recipeData.recipe.ingredients}
+          />
+        </Box>
       )}
-      <h4>Method</h4>
+      <h3>Method</h3>
       {methodCompleted ? (
         <span>
           <p>You've completed this section!</p>
         </span>
       ) : (
-        <div onClick={() => handleCreateUpdateChallengeApi(values, ['Method'])}>
-          {recipeData.recipe.method.map((step: string, index: number) => (
-            <li key={index}>{step}</li>
-          ))}
-        </div>
+        <Box
+          a11yTitle='recipe method container'
+          align='center'
+          border={{
+            size: 'xsmall',
+            side: 'vertical'
+          }}
+          justify='center'
+          onClick={() => handleCreateUpdateChallengeApi(values, ['Method'])}
+          width='medium'
+        >
+          <List
+            a11yTitle='list of steps for recipe method'
+            data={recipeData.recipe.method}
+          />
+        </Box>
       )}
       {sharedFriendsImageCompleted ? (
         <div>
@@ -257,7 +284,17 @@ const Recipe = ({ router }: { router: Router }) => {
               values={values}
             />
           ) : (
-            <button onClick={() => setTakePhoto(true)}>Take photo!</button>
+            <Button
+              a11yTitle='open up camera button'
+              color='red'
+              data-testid='button'
+              hoverIndicator={{ color: 'white' }}
+              label='TAKE PHOTO'
+              margin='medium'
+              primary={true}
+              type='button'
+              onClick={() => setTakePhoto(true)}
+            />
           )}
         </div>
       )}
@@ -277,7 +314,7 @@ const Recipe = ({ router }: { router: Router }) => {
           )}
         </FbInitAndToken>
       )}
-    </div>
+    </Box>
   )
 }
 

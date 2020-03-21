@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'grommet'
 import logger from '../utils/logger'
 
 import {
@@ -82,9 +83,17 @@ export default function FbGroupShare({
 
   return (
     <div>
-      <button style={{ position: 'absolute' }} onClick={handleShareImage}>
-        Share image to group
-      </button>
+      <Button
+        a11yTitle='share image to group button'
+        color='red'
+        data-testid='button'
+        hoverIndicator={{ color: 'white' }}
+        label='SHARE IMAGE TO FB GROUP'
+        margin='medium'
+        primary={true}
+        type='button'
+        onClick={handleShareImage}
+      />
     </div>
   )
 }

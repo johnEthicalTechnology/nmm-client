@@ -12,6 +12,8 @@ import logger from '../utils/logger'
 import { isServer } from '../utils/misc'
 import FbInitAndToken from '../containers/FbInitParent'
 import FbGroupShare from '../components/FbGroupShare'
+import { Box, Button, Paragraph } from 'grommet'
+import detectExpression from '../utils/detectExpression'
 
 import { FaceRecogProperties } from './types'
 import {
@@ -131,32 +133,33 @@ export default function LiveFaceDetect({
     }
   }
 
-  let drawBox
+  let displayExpressions
   if (faceRecogAttributes.length) {
-    drawBox = faceRecogAttributes.map((faceObj: FaceRecogProperties) => (
-      <div>
-        <div
-          style={{
-            position: 'absolute',
-            border: 'solid',
-            borderColor: 'blue',
-            height: faceObj.detection.box.height,
-            width: faceObj.detection.box.width,
-            transform: `translate(${faceObj.detection.box.x}px,${faceObj.detection.box.y}px)`
-          }}
-        ></div>
-      </div>
-    ))
+    displayExpressions = faceRecogAttributes.map(
+      (faceObj: FaceRecogProperties) => (
+        <Box a11yTitle='recipe photo container' align='center' justify='center'>
+          <Paragraph a11yTitle='expression paragraph'>
+            {detectExpression(faceObj.expressions)}
+          </Paragraph>
+        </Box>
+      )
+    )
+  }
+  const encourageMoreThanOnePersonInImage = 1
+  let encouragePeople
+  if (faceRecogAttributes.length <= encourageMoreThanOnePersonInImage) {
+    encouragePeople = (
+      <Paragraph>You've only got one person in try and get more!</Paragraph>
+    )
+  } else {
+    encouragePeople = <Paragraph>That's better!</Paragraph>
   }
 
   return (
     <>
       {dataUri ? (
-        <>
-          <ImagePreview
-            dataUri={dataUri}
-            faceRecogAttributes={faceRecogAttributes}
-          />
+        <Box a11yTitle='recipe photo container' align='center' justify='center'>
+          <ImagePreview dataUri={dataUri} />
           <FbInitAndToken>
             {() => (
               <FbGroupShare
@@ -166,41 +169,44 @@ export default function LiveFaceDetect({
               />
             )}
           </FbInitAndToken>
-        </>
+        </Box>
       ) : (
-        <div>
-          <div
-            className='Camera'
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-          >
-            <p>Camera: {camera}</p>
-            <div
-              style={{
-                width: WIDTH,
-                height: HEIGHT
+        <Box a11yTitle='recipe photo container' align='center' justify='center'>
+          {displayExpressions}
+          {encouragePeople}
+          {!!videoConstraints ? (
+            <Box
+              a11yTitle='recipe container'
+              align='center'
+              border={{
+                size: 'small',
+                side: 'all',
+                color: '#E8161A'
               }}
+              margin='medium'
+              justify='center'
             >
-              <div style={{ position: 'relative', width: WIDTH }}>
-                {!!videoConstraints ? (
-                  <div style={{ position: 'absolute' }}>
-                    <Webcam
-                      audio={false}
-                      ref={webcamRef}
-                      screenshotFormat='image/jpeg'
-                      videoConstraints={videoConstraints}
-                    />
-                  </div>
-                ) : null}
-                {!!drawBox ? drawBox : null}
-              </div>
-            </div>
-          </div>
-          <button onClick={captureImage}>Capture photo</button>
-        </div>
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat='image/jpeg'
+                videoConstraints={videoConstraints}
+              />
+            </Box>
+          ) : null}
+          <Button
+            a11yTitle='take photo button'
+            color='red'
+            data-testid='button'
+            hoverIndicator={{ color: 'white' }}
+            label='CAPTURE PHOTO'
+            margin='medium'
+            primary={true}
+            type='button'
+            onClick={captureImage}
+          />
+        </Box>
+
       )}
     </>
   )
