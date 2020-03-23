@@ -88,7 +88,6 @@ export default function SignIn() {
           fit='contain'
         />
       </Box>
-
       <DynamicForm
         failMessage={failMessage}
         formInput={formInput}

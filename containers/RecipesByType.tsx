@@ -7,7 +7,6 @@ import RecipeListCard from '../components/RecipeListCard'
 
 import { MealTypeEnum, IRecipesByType, RecipesTypeVars, Recipe } from './types'
 
-// recipesByMealType(mealType: MealTypeEnum!): [Recipe]!
 const GET_RECIPES_BY_TYPE = gql`
   query recipesByMealType($mealType: MealTypeEnum!) {
     recipesByMealType(mealType: $mealType) {
@@ -18,6 +17,11 @@ const GET_RECIPES_BY_TYPE = gql`
       mealType
       hashtags
       lowResolution
+      recipeAttribution {
+        name
+        website
+        instagram
+      }
     }
   }
 `

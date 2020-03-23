@@ -5,7 +5,16 @@ import { Box, Image, Heading, Paragraph } from 'grommet'
 import { Recipe } from '../containers/types'
 
 export default function RecipeListCard({
-  recipe: { difficulty, id, title, lowResolution, cost, mealType, hashtags }
+  recipe: {
+    difficulty,
+    id,
+    title,
+    lowResolution,
+    cost,
+    mealType,
+    hashtags,
+    recipeAttribution
+  }
 }: {
   recipe: Recipe
 }) {
@@ -57,6 +66,18 @@ export default function RecipeListCard({
           </Paragraph>
           <Paragraph a11yTitle='recipe hashtags' color='white' margin='small'>
             {hashtags}
+          </Paragraph>
+          <Heading a11yTitle='recipe attribution' color='white'>
+            Recipe Attribution
+          </Heading>
+          <Paragraph a11yTitle='name' color='white' margin='small'>
+            {recipeAttribution?.name}
+          </Paragraph>
+          <Paragraph a11yTitle='website' color='white' margin='small'>
+            {recipeAttribution?.website}
+          </Paragraph>
+          <Paragraph a11yTitle='instagram' color='white' margin='small'>
+            {recipeAttribution?.instagram}
           </Paragraph>
         </Box>
       </Box>

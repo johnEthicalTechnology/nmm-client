@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
 import Router from 'next/router'
 import { useApolloClient } from '@apollo/react-hooks'
-import Link from 'next/link'
-import { Box, Button } from 'grommet'
+import { Box, Button, Heading } from 'grommet'
+import styled from 'styled-components'
 
 import { parseAuthHash } from '../utils/auth'
 import logger from '../utils/logger'
 import { isServer } from '../utils/misc'
 
+const HeadingStyled = styled(Heading)`
+  font-family: 'NoMeatMayTitle';
+`
 /**
  * @remark this page will show links to recipes, profile, etc
  */
@@ -82,7 +85,9 @@ export default function Home() {
       justify='center'
       responsive={true}
     >
-      <h1>Welcome to the No Meat May App</h1>
+      <HeadingStyled a11yTitle='index page heading'>
+        Welcome to the No Meat May App
+      </HeadingStyled>
       <Button
         a11yTitle='go to sign up page'
         color='red'

@@ -3,6 +3,13 @@ import { Field, FormikErrors, FormikTouched } from 'formik'
 import ImageUpload from './FileUpload'
 import { TextInput } from 'grommet'
 import { DynamicFormInputObject } from './types'
+import styled from 'styled-components'
+
+const LabelStyled = styled.b`
+  font-family: 'NoMeatMayTitle';
+  font-size: x-large;
+  text-align: center;
+`
 
 export default function DynamicFormInput({
   inputItem,
@@ -18,7 +25,7 @@ export default function DynamicFormInput({
       {({ field }: { field: any }) => (
         <>
           <label htmlFor={inputItem.name}>
-            <b>{inputItem.displayName}</b>: <br />
+            <LabelStyled>{inputItem.displayName}</LabelStyled>: <br />
             <i>{inputItem.hintText}</i>
             <br />
             <Field
