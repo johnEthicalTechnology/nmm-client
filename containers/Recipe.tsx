@@ -201,9 +201,9 @@ const Recipe = ({ router }: { router: Router }) => {
   if (recipeError != undefined && recipeError) {
     return <h1>Error! {recipeError.message}</h1>
   }
-  // if (!signedIn) {
-  //   return <UnAuthRecipeDeets recipe={recipeData.recipe} />
-  // }
+  if (!signedIn) {
+    return <UnAuthRecipeDeets recipe={recipeData.recipe} />
+  }
   return (
     <Box a11yTitle='recipe container' align='center' justify='center'>
       <Box a11yTitle='recipe title and image container' pad='small' width='640'>
