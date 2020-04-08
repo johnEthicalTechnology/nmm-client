@@ -1,5 +1,12 @@
 import React from 'react'
 import { Field, FormikErrors, FormikTouched } from 'formik'
+import { Heading } from 'grommet'
+import styled from 'styled-components'
+
+const LabelStyled = styled(Heading)`
+  font-family: 'NoMeatMayTitle';
+  text-align: center;
+`
 
 import { DynamicFormInputObject, DynamicFormCheckboxInputObject } from './types'
 
@@ -16,19 +23,21 @@ export default function DynamicFormCheckbox({
     <Field name={inputItem.name}>
       {() => (
         <>
+          <LabelStyled>{inputItem.legend}</LabelStyled>
           <fieldset name={inputItem.name}>
             <legend>
-              {inputItem.legend} - <i>{inputItem.hintText}</i>
+              <i>{inputItem.hintText}</i>
             </legend>
             {inputItem.checkboxInput!.map(
               (checkboxItem: DynamicFormCheckboxInputObject) => (
                 <React.Fragment key={checkboxItem.name}>
                   {errors[checkboxItem.name] && touched[checkboxItem.name] ? (
                     <div
+                      className='errors'
                       id={checkboxItem.errorMessageId}
                       data-testid={checkboxItem.errorMessageId}
                     >
-                      {errors[checkboxItem.name]}
+                      Error: {errors[checkboxItem.name]}
                     </div>
                   ) : null}
                   <label htmlFor={checkboxItem.name}>

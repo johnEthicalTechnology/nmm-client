@@ -1,15 +1,10 @@
 import React from 'react'
 import { Field, FormikErrors, FormikTouched } from 'formik'
 import ImageUpload from './FileUpload'
-import { TextInput } from 'grommet'
-import { DynamicFormInputObject } from './types'
+import { TextInput, Paragraph, Heading } from 'grommet'
 import styled from 'styled-components'
 
-const LabelStyled = styled.b`
-  font-family: 'NoMeatMayTitle';
-  font-size: x-large;
-  text-align: center;
-`
+import { DynamicFormInputObject } from './types'
 
 export default function DynamicFormInput({
   inputItem,
@@ -25,9 +20,27 @@ export default function DynamicFormInput({
       {({ field }: { field: any }) => (
         <>
           <label htmlFor={inputItem.name}>
-            <LabelStyled>{inputItem.displayName}</LabelStyled>: <br />
-            <i>{inputItem.hintText}</i>
-            <br />
+            {inputItem.name === 'id' ? null : (
+              <>
+                <Heading
+                  a11yTitle='input label'
+                  level='3'
+                  margin='xsmall'
+                  size='xlarge'
+                  className='impactFont'
+                >
+                  {inputItem.displayName}
+                </Heading>
+                <Paragraph
+                  a11yTitle='input hint text'
+                  fill={true}
+                  size='small'
+                  textAlign='center'
+                >
+                  {inputItem.hintText}
+                </Paragraph>
+              </>
+            )}
             <Field
               aria-errormessage={inputItem.errorMessageId}
               aria-invalid={!!errors[inputItem.name]}
@@ -41,13 +54,14 @@ export default function DynamicFormInput({
               {...field}
             />
           </label>
-          <br />
           {errors[inputItem.name] && touched[inputItem.name] ? (
             <div
+              className='errors'
               id={inputItem.errorMessageId}
               data-testid={inputItem.errorMessageId}
             >
-              {errors[inputItem.name]}
+              <br />
+              Error: {errors[inputItem.name]}
             </div>
           ) : null}
         </>

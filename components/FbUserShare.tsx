@@ -58,7 +58,6 @@ export default function FbUserShare({
     <div>
       <Button
         a11yTitle='share'
-        color='red'
         data-testid='button'
         hoverIndicator={{ color: 'white' }}
         label='SHARE RECIPE TO TIMELINE'

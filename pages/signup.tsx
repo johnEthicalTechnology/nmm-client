@@ -7,11 +7,7 @@ export default function SignUpPage() {
   return (
     <Box
       align='center'
-      background={{
-        position: 'center center',
-        size: '40% 100%',
-        image: 'url(/potato-roses-with-zucchini-cropped.jpeg)'
-      }}
+      background='url(/potato-roses-with-zucchini-cropped.jpeg)'
       direction='column'
       height='100vh'
       justify='center'
@@ -20,7 +16,6 @@ export default function SignUpPage() {
       <SignUp />
       <Button
         a11yTitle='go to sign up page'
-        color='red'
         data-testid='button'
         hoverIndicator={{ color: 'white' }}
         href='/signin'

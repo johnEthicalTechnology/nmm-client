@@ -88,13 +88,14 @@ export interface FileUploadProps extends FieldProps {
 export interface ModalProps {
   status: ModalStatus
   successMessage?: string
-  failMessage: string
+  failMessage?: string
   setStatus: (arg: ModalStatus) => void
 }
 
 export interface ModalStatus {
   success?: boolean
   openModal: boolean
+  errorMessage?: string
 }
 
 export interface CheckboxSchemaObj {

@@ -196,7 +196,6 @@ export default function LiveFaceDetect({
           ) : null}
           <Button
             a11yTitle='take photo button'
-            color='red'
             data-testid='button'
             hoverIndicator={{ color: 'white' }}
             label='CAPTURE PHOTO'
@@ -206,7 +205,6 @@ export default function LiveFaceDetect({
             onClick={captureImage}
           />
         </Box>
-
       )}
     </>
   )

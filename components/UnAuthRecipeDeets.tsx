@@ -31,7 +31,6 @@ export default function UnAuthRecipeDeets({ recipe }: { recipe: Recipe }) {
       >
         <List
           a11yTitle='list of recipe ingredients'
-
           data={recipe.ingredients}
         />
       </Box>
@@ -57,7 +56,6 @@ export default function UnAuthRecipeDeets({ recipe }: { recipe: Recipe }) {
       </h1>
       <Button
         a11yTitle='go to sign up page'
-        color='red'
         data-testid='button'
         hoverIndicator={{ color: 'white' }}
         href='/signup'

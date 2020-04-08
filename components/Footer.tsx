@@ -1,17 +1,23 @@
 import React from 'react'
 import { Footer, Anchor } from 'grommet'
 import { Instagram, Facebook, Twitter } from 'grommet-icons'
-import { AnchorStyled } from './sharedStyledComponents/anchors'
+import styled from 'styled-components'
+
+const FooterStyled = styled(Footer)`
+  position: absolute;
+  width: 100%;
+`
 
 export default function FooterComponent({ page }: { page: string }) {
   if (page == 'SignInPage' || page == 'SignUpPage') return null
   return (
-    <Footer a11yTitle='footer' background='red'>
-      <AnchorStyled
+    <FooterStyled a11yTitle='footer' background='#002E5D'>
+      <Anchor
         a11yTitle='link to no meat may website'
         color='white'
         href='https://www.nomeatmay.net/'
         label='No Meat May'
+        className='impactFont'
       />
       <Anchor
         a11yTitle='link to instagram page'
@@ -28,6 +34,6 @@ export default function FooterComponent({ page }: { page: string }) {
         href='https://www.facebook.com/nomeatmay/'
         icon={<Facebook color='white' />}
       />
-    </Footer>
+    </FooterStyled>
   )
 }

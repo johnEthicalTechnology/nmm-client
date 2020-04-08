@@ -14,7 +14,7 @@ export default () => {
       appId: process.env.FB_APP_ID,
       autoLogAppEvents: true,
       xfbml: true,
-      version: 'v5.0'
+      version: 'v6.0'
     })
   }
 }

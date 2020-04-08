@@ -41,6 +41,7 @@ export default function DynamicForm(props: DynamicFormProps) {
         )}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
+        enableReinitialize={true}
       >
         {({
           errors,
@@ -91,14 +92,14 @@ export default function DynamicForm(props: DynamicFormProps) {
               a11yTitle={a11yTitle}
               active={isSubmitting}
               alignSelf='center'
-              color='red'
               data-testid='submit'
               disabled={isSubmitting}
               fill='horizontal'
               hoverIndicator={true}
               label={submitType}
               margin={{
-                bottom: '30px'
+                bottom: '30px',
+                top: '30px'
               }}
               onClick={() => onSubmit}
               primary={true}

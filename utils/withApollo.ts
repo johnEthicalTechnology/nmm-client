@@ -22,6 +22,6 @@ function initApollo(initialState: NormalizedCacheObject) {
   return apolloClient
 }
 
-export default nextWithApollo(({ initialState = {} }) => {
+export default nextWithApollo(({ initialState }) => {
   return initApollo(initialState)
 })

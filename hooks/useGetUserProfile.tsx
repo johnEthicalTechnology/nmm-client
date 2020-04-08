@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import { UserProfileData } from './types'
 
 const GET_CURRENT_USER = gql`
   query me($userProfileId: String!) {
@@ -19,7 +20,7 @@ const GET_CURRENT_USER = gql`
 `
 
 export default function useGetUserProfile(userProfileId: string) {
-  const { loading, error, data } = useQuery(GET_CURRENT_USER, {
+  const { loading, error, data } = useQuery<UserProfileData>(GET_CURRENT_USER, {
     variables: { userProfileId }
   })
 

@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { object, string } from 'yup'
-import { Box, Image } from 'grommet'
-import { signUp } from '../utils/auth'
+import { Box, Image, Paragraph, Button } from 'grommet'
+import { Facebook } from 'grommet-icons'
+import { signUp, signIn } from '../utils/auth'
+import { SignInTypes } from '../utils/types'
+import FacebookSignInFailModal from 'react-modal'
 
 import DynamicForm from '../components/DynamicForm'
 
@@ -33,7 +36,7 @@ export default function SignIn() {
       .trim()
       .required('Please enter an email!'),
     password: string()
-      .min(10, 'Too short!')
+      .min(8, 'Too short!')
       .trim()
       .required('Please enter a password!')
   })
@@ -67,6 +70,33 @@ export default function SignIn() {
     { name: 'password', value: '' }
   ]
 
+  // N.B. - Facebook sign-in
+  // TODO - fix styles
+  const facebookModalCustomStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)'
+    }
+  }
+  const [facebookSignInModalState, setFacebookSignInModalState] = useState(
+    false
+  )
+  function closeModal() {
+    setFacebookSignInModalState(false)
+  }
+  const facebookSignIn = () => {
+    try {
+      signIn(SignInTypes.social)
+    } catch (error) {
+      localStorage.setItem('signed_in', 'false')
+      setFacebookSignInModalState(true)
+    }
+  }
+
   return (
     <Box
       a11yTitle='sign in card'
@@ -98,6 +128,53 @@ export default function SignIn() {
         formInitialValues={formInitialValues}
         a11yTitle={a11yTitle}
       />
+      <Paragraph
+        a11yTitle='sign up information'
+        margin={{
+          top: '0',
+          bottom: '20px'
+        }}
+        size='small'
+        textAlign='center'
+      >
+        To access only RECIPES use the sign up form above. To access RECIPES and
+        FACEBOOK SHARING functionality click the Facebook button below.
+      </Paragraph>
+      <Button
+        a11yTitle='Submit Facebook sign in credentials'
+        color='#4267B2'
+        data-testid='submit'
+        icon={<Facebook />}
+        label='CONTINUE WITH FACEBOOK'
+        margin={{
+          top: '0',
+          bottom: '10px'
+        }}
+        onClick={() => facebookSignIn()}
+        primary={true}
+        type='submit'
+      />
+      <Paragraph
+        a11yTitle='facebook reassurance'
+        margin={{
+          top: '0',
+          bottom: '20px'
+        }}
+        size='small'
+        textAlign='center'
+      >
+        We won't post anything to Facebook without your permission.
+      </Paragraph>
+      <FacebookSignInFailModal
+        isOpen={facebookSignInModalState}
+        closeTimeoutMS={2}
+        style={facebookModalCustomStyles}
+        contentLabel={failMessage}
+        shouldCloseOnOverlayClick={true}
+      >
+        <button onClick={closeModal}>close</button>
+        <h3>{failMessage}</h3>
+      </FacebookSignInFailModal>
     </Box>
   )
 }

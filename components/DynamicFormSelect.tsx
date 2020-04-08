@@ -5,6 +5,13 @@ import {
   DynamicFormSelectArray,
   SelectOption
 } from './types'
+import { Heading } from 'grommet'
+import styled from 'styled-components'
+
+const LabelStyled = styled(Heading)`
+  font-family: 'NoMeatMayTitle';
+  text-align: center;
+`
 
 export default function DynamicFormSelect({
   formSelect,
@@ -22,8 +29,8 @@ export default function DynamicFormSelect({
           {({ field }: { field: any }) => (
             <React.Fragment key={selectItem.name}>
               <br />
-              <label htmlFor={selectItem.name}>
-                <b>{selectItem.title}</b>:<br />
+              <label htmlFor={`{selectItem.name}-select`}>
+                <LabelStyled>{selectItem.title}</LabelStyled>
                 <br />
                 <Field
                   component='select'
@@ -43,10 +50,11 @@ export default function DynamicFormSelect({
               </label>
               {errors[selectItem.name] && touched[selectItem.name] ? (
                 <div
+                  className='errors'
                   id={selectItem.errorMessageId}
                   data-testid={selectItem.errorMessageId}
                 >
-                  {errors[selectItem.name]}
+                  Error: {errors[selectItem.name]}
                 </div>
               ) : null}
               <br />

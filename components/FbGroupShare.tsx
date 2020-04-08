@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from 'grommet'
+import FacebookShareGroupMessageModal from 'react-modal'
 import logger from '../utils/logger'
 
 import {
@@ -16,6 +17,15 @@ export default function FbGroupShare({
   handleCreateUpdateChallengeApi: HandleCreateUpdateChallengeApi
   values: CreateUpdateMutationValues
 }) {
+  const [
+    facebookShareGroupSuccessMessage,
+    setfacebookShareGroupSuccessMessage
+  ] = useState(false)
+  const [
+    facebookShareGroupFailMessage,
+    setFacebookShareGroupFailMessage
+  ] = useState(false)
+
   function handleShareImage() {
     FB.getLoginStatus(async (res: fb.StatusResponse) => {
       if (res.status != 'connected') {
@@ -55,11 +65,13 @@ export default function FbGroupShare({
           //   }
           // }
           if (res?.error) {
+            setFacebookShareGroupFailMessage(true)
             logger.log({
               level: 'ERROR',
               description: res.error.message
             })
           } else {
+            setfacebookShareGroupSuccessMessage(true)
             handleCreateUpdateChallengeApi(values, ['SharedFriendsImage'], {
               standardResolution: files.secure_url,
               lowResSharedFriendsImage: files.eager[0].secure_url
@@ -81,11 +93,31 @@ export default function FbGroupShare({
     })
   }
 
+  const facebookModalCustomStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)'
+    }
+  }
+
+  function closeModal() {
+    setFacebookShareGroupFailMessage(false)
+    setfacebookShareGroupSuccessMessage(false)
+  }
+  const modalMessage = facebookShareGroupSuccessMessage
+    ? 'You succeed in posting to the No Meat May Facebook group!'
+    : facebookShareGroupFailMessage
+    ? 'Failed to post photo to group. Please try again!'
+    : ''
+
   return (
     <div>
       <Button
         a11yTitle='share image to group button'
-        color='red'
         data-testid='button'
         hoverIndicator={{ color: 'white' }}
         label='SHARE IMAGE TO FB GROUP'
@@ -94,6 +126,18 @@ export default function FbGroupShare({
         type='button'
         onClick={handleShareImage}
       />
+      <FacebookShareGroupMessageModal
+        isOpen={
+          facebookShareGroupFailMessage || facebookShareGroupSuccessMessage
+        }
+        closeTimeoutMS={2}
+        style={facebookModalCustomStyles}
+        contentLabel='Fail or Success modal for posting to No Meat May Facebook group'
+        shouldCloseOnOverlayClick={true}
+      >
+        <button onClick={closeModal}>close</button>
+        <h3>{modalMessage}</h3>
+      </FacebookShareGroupMessageModal>
     </div>
   )
 }

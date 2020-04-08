@@ -1,5 +1,5 @@
 import React from 'react'
-import Recipe from '../../../containers/Recipe'
+import Recipe from '../containers/Recipe'
 
 export default function RecipePage() {
   return (
